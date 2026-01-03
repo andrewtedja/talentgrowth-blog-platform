@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export interface User {
 	id: number;
 	name: string;
@@ -5,6 +7,7 @@ export interface User {
 	password: string;
 	createdAt: Date;
 }
+
 export interface AuthRequest extends Request {
 	userId?: number;
 }

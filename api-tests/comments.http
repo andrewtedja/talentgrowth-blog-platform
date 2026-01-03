@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:5000
+@contentType = application/json
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NzQ2MjcyMCwiZXhwIjoxNzY4MDY3NTIwfQ.a4vnjP_dtBzyiRmTcIusrmXdOPZXYL-CklRgzmKwuDU
+
+### Get all comments for a post
+GET {{baseUrl}}/api/posts/2/comments
+
+### Create new comment (need token)
+POST {{baseUrl}}/api/posts/2/comments
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "content": "This is comment reply."
+}
+
+### Update comment
+PUT {{baseUrl}}/api/comments/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "content": "Updated comment content here."
+}
+
+### Delete comment
+DELETE {{baseUrl}}/api/comments/1
+Authorization: Bearer {{token}}
