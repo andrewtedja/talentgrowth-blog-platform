@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:5000
 @contentType = application/json
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NzQ1ODg4NywiZXhwIjoxNzY4MDYzNjg3fQ.rn8WrNDDehxbgrOCQpj2JS6mYUWLSGT-YFP_A25IYN0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NzQ2MjcyMCwiZXhwIjoxNzY4MDY3NTIwfQ.a4vnjP_dtBzyiRmTcIusrmXdOPZXYL-CklRgzmKwuDU
 
 ### Get all posts
 GET {{baseUrl}}/api/posts
@@ -15,7 +15,7 @@ Authorization: Bearer {{token}}
 
 {
   "title": "Post 1",
-  "content": "This is the content of Post 1",
+  "content": "This is the content of Post 1"
 }
 
 ### Update post
