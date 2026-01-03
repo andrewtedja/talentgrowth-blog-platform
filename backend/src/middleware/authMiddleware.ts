@@ -1,16 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { JWTPayload } from "../types/index.js";
-import type { AuthRequest } from "../types/index.js";
+import { JWTPayload } from "../types/index";
+import type { AuthRequest } from "../types/index";
 
 export const requireAuth = (
 	req: AuthRequest,
 	res: Response,
 	next: NextFunction
 ) => {
-	const authHeader = req.headers.get("authorization");
-
-	const token = authHeader && authHeader.split(" ")[1];
+	const authHeader = req.headers.authorization as string | undefined;
+	const token = authHeader?.split(" ")[1];
 
 	if (!token) {
 		res.status(401).json({ error: "Access token required!" });

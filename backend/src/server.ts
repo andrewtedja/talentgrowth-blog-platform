@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import authRoutes from "./routes/auth.js";
+import authRoutes from "./routes/auth";
+import postRoutes from "./routes/posts";
 
 // Express application bootstrap
 dotenv.config();
@@ -19,7 +20,8 @@ app.get("/health", (_req, res) => {
 	res.json({ status: "ok" });
 });
 
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server running on http://localhost:${PORT} !!!`);

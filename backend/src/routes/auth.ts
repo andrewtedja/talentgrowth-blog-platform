@@ -3,13 +3,13 @@ import type { Router as ExpressRouter } from "express";
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { db } from "../db/index.js";
-import { users } from "../db/schema.js";
+import { db } from "../db/index";
+import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 const router: ExpressRouter = Router();
 
-// POST /register
+// POST /api/auth/register
 router.post("/register", async (req, res) => {
 	try {
 		const { name, email, password } = req.body;
@@ -56,7 +56,7 @@ router.post("/register", async (req, res) => {
 	}
 });
 
-// POST /login
+// POST /api/auth/login
 router.post("/login", async (req, res) => {
 	try {
 		const { email, password } = req.body;
@@ -101,7 +101,7 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-// POST Logout (client-side token removal, server just acknowledges)
+// POST /api/auth/logout (client-side token removal, server just acknowledges)
 router.post("/logout", async (req, res) => {
 	res.json({ message: "Logout successful !" });
 });
