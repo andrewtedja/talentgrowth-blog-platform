@@ -1,0 +1,33 @@
+@baseUrl = http://localhost:5000
+@contentType = application/json
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NzQ2MjcyMCwiZXhwIjoxNzY4MDY3NTIwfQ.a4vnjP_dtBzyiRmTcIusrmXdOPZXYL-CklRgzmKwuDU
+
+### Get all posts
+GET {{baseUrl}}/api/posts
+
+### Get single post
+GET {{baseUrl}}/api/posts/2
+
+### Create new post (need token from login)
+POST {{baseUrl}}/api/posts
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "title": "Post 1",
+  "content": "This is the content of Post 1"
+}
+
+### Update post
+PUT {{baseUrl}}/api/posts/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "title": "Updated Post Title",
+  "content": "Updated content here.",
+}
+
+### Delete post
+DELETE {{baseUrl}}/api/posts/1
+Authorization: Bearer {{token}}

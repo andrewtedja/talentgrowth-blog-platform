@@ -5,7 +5,7 @@
 GET {{baseUrl}}/health
 
 ### Register New User
-POST {{baseUrl}}/auth/register
+POST {{baseUrl}}/api/auth/register
 Content-Type: {{contentType}}
 
 {
@@ -16,7 +16,7 @@ Content-Type: {{contentType}}
 
 ### Login
 # @name login
-POST {{baseUrl}}/auth/login
+POST {{baseUrl}}/api/auth/login
 Content-Type: {{contentType}}
 
 {
@@ -25,12 +25,12 @@ Content-Type: {{contentType}}
 }
 
 ### Logout
-POST {{baseUrl}}/auth/logout
+POST {{baseUrl}}/api/auth/logout
 Content-Type: {{contentType}}
 Authorization: Bearer {{login.response.body.token}}
 
 ### Login - Wrong Password
-POST {{baseUrl}}/auth/login
+POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
