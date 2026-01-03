@@ -5,6 +5,15 @@
 ### Get all posts
 GET {{baseUrl}}/api/posts
 
+### Get all posts (WITH PAGINATION+LIMIT)
+GET {{baseUrl}}/api/posts?page=2&limit=5
+
+### Get posts (WITH SEARCH)
+GET {{baseUrl}}/api/posts?search=post
+
+### Get posts with pagination and search
+GET {{baseUrl}}/api/posts?page=1&limit=5&search=content
+
 ### Get single post
 GET {{baseUrl}}/api/posts/2
 

@@ -1,7 +1,7 @@
 import { Router, type Router as ExpressRouter } from "express";
 import { db } from "../db/index";
 import { posts, users } from "../db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, ilike, or, desc } from "drizzle-orm";
 import { requireAuth } from "../middleware/authMiddleware";
 import type { AuthRequest } from "../types/index";
 
@@ -10,6 +10,18 @@ const router: ExpressRouter = Router();
 // GET /api/posts
 router.get("/", async (req, res) => {
 	try {
+		const page = Number(req.query.page) || 1;
+		const limit = Number(req.query.limit) || 10;
+		const search = req.query.search as string | undefined;
+		const offset = (page - 1) * limit;
+
+		const whereCondition = search
+			? or(
+					ilike(posts.title, `%${search}%`),
+					ilike(posts.content, `%${search}%`)
+			  )
+			: undefined;
+
 		const allPosts = await db
 			.select({
 				id: posts.id,
@@ -25,9 +37,27 @@ router.get("/", async (req, res) => {
 			})
 			.from(posts)
 			.leftJoin(users, eq(posts.authorId, users.id))
-			.orderBy(desc(posts.createdAt));
+			.where(whereCondition)
+			.orderBy(desc(posts.createdAt))
+			.limit(limit)
+			.offset(offset);
 
-		res.json(allPosts);
+		const countResult = await db
+			.select({ count: posts.id })
+			.from(posts)
+			.where(whereCondition);
+
+		const totalCount = countResult[0]?.count || 0;
+
+		res.json({
+			data: allPosts,
+			pagination: {
+				page,
+				limit,
+				total: Number(totalCount),
+				totalPages: Math.ceil(Number(totalCount) / limit),
+			},
+		});
 	} catch (error) {
 		console.error("Get posts error:", error);
 		res.status(500).json({ error: "Failed to fetch posts" });
