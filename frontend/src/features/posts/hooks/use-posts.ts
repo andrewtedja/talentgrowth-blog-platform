@@ -1,11 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { postsApi } from "../api";
 import { useRouter } from "next/navigation";
+import type { PaginatedResponse, Post } from "@/core/types";
 
-export function usePosts(params?: { page?: number; limit?: number; search?: string }) {
+export function usePosts(
+	params?: { page?: number; limit?: number; search?: string },
+	initialData?: PaginatedResponse<Post>
+) {
 	return useQuery({
 		queryKey: ["posts", params],
 		queryFn: () => postsApi.getAll(params),
+		initialData,
 	});
 }
 
