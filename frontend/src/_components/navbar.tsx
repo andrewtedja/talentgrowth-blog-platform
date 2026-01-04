@@ -12,53 +12,56 @@ export function Navbar() {
 	const logout = useLogout();
 
 	return (
-		<nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-			<div className="container flex h-14 max-w-screen-2xl items-center justify-between">
-				<Link href="/" className="mr-6 flex items-center space-x-2">
-					<span className="font-bold sm:inline-block">TalentGrowth</span>
-				</Link>
+		<nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+			<div className="container flex h-16 py-2 items-center justify-between">
+				<div className="flex items-center gap-8">
+                    <Link href="/" className="flex items-center space-x-2">
+                        <span className="text-xl font-bold tracking-tight">Blogify</span>
+                    </Link>
+                </div>
 
-				<div className="flex items-center gap-2 md:gap-4">
+				<div className="flex items-center gap-4">
 					{isAuthenticated ? (
 						<>
-							<Button variant="ghost" size="sm" asChild className="hidden sm:flex">
-								<Link href="/posts/create">
-									<PenSquare className="mr-2 h-4 w-4" />
-									Write
-								</Link>
-							</Button>
-
-							<Button variant="ghost" size="icon" asChild className="sm:hidden">
-								<Link href="/posts/create">
-									<PenSquare className="h-4 w-4" />
-                                    <span className="sr-only">Write</span>
-								</Link>
-							</Button>
-
-							<Button variant="ghost" size="sm" asChild>
-								<Link href={`/profile/${user?.id}`}>
-                                    <User className="mr-2 h-4 w-4" />
-									Profile
-								</Link>
-							</Button>
-							<Button
-								variant="ghost"
-								size="sm"
-								onClick={() => logout.mutate()}
+							<Link
+								href="/posts/create"
+								className="flex items-center justify-center rounded-md bg-primary p-2 sm:px-4 sm:py-2 text-primary-foreground hover:bg-primary/90 transition-colors"
 							>
-                                <LogOut className="mr-2 h-4 w-4" />
-								Logout
-							</Button>
+								<PenSquare className="h-4 w-4 mr-2" />
+                                <span className="sr-only hidden lg:inline">Write</span>
+							</Link>
+
+							<Link
+								href={`/profile/${user?.id}`}
+								className="flex items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+							>
+								<User className="mr-2 h-4 w-4" />
+								<span className="hidden sm:inline">Profile</span>
+							</Link>
+
+							<button
+								onClick={() => logout.mutate()}
+								className="flex items-center justify-center rounded-md hover:bg-accent hover:text-destructive px-3 py-2 text-sm font-medium text-muted-foreground transition-colors"
+							>
+								<LogOut className="mr-2 h-4 w-4" />
+								<span className="hidden sm:inline">Logout</span>
+							</button>
 						</>
 					) : (
-						<>
-							<Button variant="ghost" size="sm" asChild>
-								<Link href="/login">Login</Link>
-							</Button>
-							<Button size="sm" asChild>
-								<Link href="/register">Get Started</Link>
-							</Button>
-						</>
+						<div className="flex items-center gap-4">
+							<Link
+								href="/login"
+								className="text-sm font-medium text-slate-600 hover:text-orange-600 transition-colors px-4 py-2"
+							>
+								Login
+							</Link>
+							<Link
+								href="/register"
+								className="flex items-center justify-center rounded-full bg-orange-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-orange-200 transition-all hover:bg-orange-700 hover:shadow-orange-300 hover:-translate-y-0.5 active:translate-y-0"
+							>
+								Get Started
+							</Link>
+						</div>
 					)}
 				</div>
 			</div>

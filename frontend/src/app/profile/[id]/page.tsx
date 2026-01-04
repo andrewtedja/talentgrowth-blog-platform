@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/features/users/hooks/use-user";
+import { Calendar } from "lucide-react";
 
 export default function ProfilePage() {
 	const params = useParams();
@@ -48,19 +49,15 @@ export default function ProfilePage() {
 							<Link
 								key={post.id}
 								href={`/posts/${post.id}`}
-								className="block p-6 border border-gray-200 rounded-lg hover:border-orange-500 transition"
+								className="block"
 							>
-								<h3 className="text-xl font-semibold text-gray-900 mb-2">{post.title}</h3>
-								<p className="text-gray-600 mb-3 line-clamp-2">{post.content}</p>
-								<div className="flex items-center text-sm text-gray-500">
-									<span>{new Date(post.createdAt).toLocaleDateString()}</span>
-									{post.updatedAt !== post.createdAt && (
-										<>
-											<span className="mx-2">•</span>
-											<span>Updated {new Date(post.updatedAt).toLocaleDateString()}</span>
-										</>
-									)}
-								</div>
+                                <div className="rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-md transition-all hover:border-primary/50 p-6">
+								    <h3 className="text-lg font-semibold leading-none tracking-tight mb-2 group-hover:text-primary">{post.title}</h3>
+								    <div className="flex items-center text-sm text-muted-foreground mt-4">
+                                        <Calendar className="mr-2 h-4 w-4" />
+									    <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+								    </div>
+                                </div>
 							</Link>
 						))}
 					</div>

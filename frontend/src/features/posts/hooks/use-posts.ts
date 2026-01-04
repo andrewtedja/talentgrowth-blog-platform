@@ -10,7 +10,7 @@ export function usePosts(
 	return useQuery({
 		queryKey: ["posts", params],
 		queryFn: () => postsApi.getAll(params),
-		initialData,
+		initialData: params?.search ? undefined : initialData,
 	});
 }
 
