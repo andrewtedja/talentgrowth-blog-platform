@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:5000
+@contentType = application/json
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc2NzQ2MjcyMCwiZXhwIjoxNzY4MDY3NTIwfQ.a4vnjP_dtBzyiRmTcIusrmXdOPZXYL-CklRgzmKwuDU
+
+### Get user profile by ID
+GET {{baseUrl}}/api/users/1
+
+### Get current user profile
+GET {{baseUrl}}/api/users/me/profile
+Authorization: Bearer {{token}}
