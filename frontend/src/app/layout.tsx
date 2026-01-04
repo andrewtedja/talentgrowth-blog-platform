@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { QueryProvider } from "@/core/api/query";
 import { AuthProvider } from "@/core/contexts/auth-context";
+import { Navbar } from "@/_components/navbar";
 
 export const metadata: Metadata = {
 	title: "Talent Growth Blog",
@@ -15,9 +16,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className="antialiased">
+			<body>
 				<QueryProvider>
-					<AuthProvider>{children}</AuthProvider>
+					<AuthProvider>
+						<Navbar />
+						{children}
+					</AuthProvider>
 				</QueryProvider>
 			</body>
 		</html>
