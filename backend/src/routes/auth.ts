@@ -51,10 +51,17 @@ router.post("/register", async (req, res) => {
 			expiresIn: "7d",
 		});
 
+		// httpOnly cookie config
+		res.cookie("token", token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "lax",
+			maxAge: 7 * 24 * 60 * 60 * 1000,
+		});
+
 		res.status(201).json({
 			message: "User registered successfully !",
 			user: newUser,
-			token,
 		});
 	} catch (error) {
 		console.error("Register error:", error);
@@ -97,6 +104,13 @@ router.post("/login", async (req, res) => {
 			expiresIn: "7d",
 		});
 
+		res.cookie("token", token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "lax",
+			maxAge: 7 * 24 * 60 * 60 * 1000,
+		});
+
 		res.json({
 			message: "Login successful !",
 			user: {
@@ -104,7 +118,6 @@ router.post("/login", async (req, res) => {
 				name: user.name,
 				email: user.email,
 			},
-			token,
 		});
 	} catch (error) {
 		console.error("Login error:", error);
@@ -112,8 +125,9 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-// POST /api/auth/logout (client-side token removal, server just acknowledges)
+// POST /api/auth/logout
 router.post("/logout", async (req, res) => {
+	res.clearCookie("token");
 	res.json({ message: "Logout successful !" });
 });
 

@@ -8,8 +8,8 @@ export const requireAuth = (
 	res: Response,
 	next: NextFunction
 ) => {
-	const authHeader = req.headers.authorization as string | undefined;
-	const token = authHeader?.split(" ")[1];
+	// token from httpOnly cookie
+	const token = req.cookies.token;
 
 	if (!token) {
 		res.status(401).json({ error: "Access token required!" });
