@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCreatePost } from "@/features/posts/hooks/use-posts";
 import dynamic from "next/dynamic";
+import { useMemo } from "react";
 import "easymde/dist/easymde.min.css";
 
 // Dynamic import for SimpleMDE to avoid SSR issues
@@ -25,6 +26,12 @@ export default function CreatePostPage() {
 	const { register, control, handleSubmit, formState: { errors } } = useForm<PostForm>({
 		resolver: zodResolver(postSchema),
 	});
+
+	const editorOptions = useMemo(() => ({
+		placeholder: "Write your story here... Markdown is supported.",
+		status: false,
+		spellChecker: false,
+	}), []);
 
 	const onSubmit = (data: PostForm) => {
 		createPost.mutate(data);
@@ -70,12 +77,9 @@ export default function CreatePostPage() {
                                 control={control}
                                 render={({ field }) => (
                                     <SimpleMDE
-                                        {...field}
-                                        options={{
-                                            placeholder: "Write your story here... Markdown is supported.",
-                                            status: false,
-                                            spellChecker: false,
-                                        }}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        options={editorOptions}
                                     />
                                 )}
                             />

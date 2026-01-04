@@ -55,8 +55,10 @@ export function useDeletePost() {
 
 	return useMutation({
 		mutationFn: postsApi.delete,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["posts"] });
+		onSuccess: async (_, deletedId) => {
+			queryClient.removeQueries({ queryKey: ["posts", deletedId] });
+			// Invalidate all posts lists
+			await queryClient.invalidateQueries({ queryKey: ["posts"] });
 			router.push("/");
 		},
 	});

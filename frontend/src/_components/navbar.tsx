@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/core/contexts/auth-context";
 import { useLogout } from "@/features/auth/hooks/use-auth";
@@ -10,25 +11,37 @@ import { PenSquare, User, LogOut } from "lucide-react";
 export function Navbar() {
 	const { user, isAuthenticated } = useAuth();
 	const logout = useLogout();
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		const timer = setTimeout(() => setMounted(true), 0);
+		return () => clearTimeout(timer);
+	}, []);
 
 	return (
 		<nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 			<div className="container flex h-16 py-2 items-center justify-between">
 				<div className="flex items-center gap-8">
-                    <Link href="/" className="flex items-center space-x-2">
-                        <span className="text-xl font-bold tracking-tight">Blogify</span>
-                    </Link>
-                </div>
+					<Link href="/" className="flex items-center space-x-2">
+						<span className="text-xl font-bold tracking-tight">Blogify</span>
+					</Link>
+				</div>
 
 				<div className="flex items-center gap-4">
-					{isAuthenticated ? (
+					{!mounted ? (
+						// Render placeholder during SSR to match initial state
+						<div className="flex items-center gap-4">
+							<div className="h-9 w-16 bg-muted animate-pulse rounded" />
+							<div className="h-9 w-24 bg-muted animate-pulse rounded-full" />
+						</div>
+					) : isAuthenticated ? (
 						<>
 							<Link
 								href="/posts/create"
 								className="flex items-center justify-center rounded-md bg-primary p-2 sm:px-4 sm:py-2 text-primary-foreground hover:bg-primary/90 transition-colors"
 							>
 								<PenSquare className="h-4 w-4 mr-2" />
-                                <span className="sr-only hidden lg:inline">Write</span>
+								<span className="sr-only hidden lg:inline">Write</span>
 							</Link>
 
 							<Link

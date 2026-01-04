@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { usePost, useUpdatePost } from "@/features/posts/hooks/use-posts";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 
@@ -29,6 +29,12 @@ export default function EditPostPage() {
 	const { register, control, handleSubmit, formState: { errors }, reset } = useForm<PostForm>({
 		resolver: zodResolver(postSchema),
 	});
+
+	const editorOptions = useMemo(() => ({
+		placeholder: "Write your story here... Markdown is supported.",
+		status: false,
+		spellChecker: false,
+	}), []);
 
 	useEffect(() => {
 		if (post) {
@@ -90,12 +96,9 @@ export default function EditPostPage() {
                                 control={control}
                                 render={({ field }) => (
                                     <SimpleMDE
-                                        {...field}
-                                        options={{
-                                            placeholder: "Write your story here... Markdown is supported.",
-                                            status: false,
-                                            spellChecker: false,
-                                        }}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        options={editorOptions}
                                     />
                                 )}
                             />
