@@ -6,18 +6,24 @@ import jwt from "jsonwebtoken";
 import { db } from "../db/index";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { loginSchema, registerSchema } from "../validations/auth-validation";
 
 const router: ExpressRouter = Router();
 
 // POST /api/auth/register
 router.post("/register", async (req, res) => {
 	try {
-		const { name, email, password } = req.body;
+		const result = registerSchema.safeParse(req.body);
 
-		if (!name || !email || !password) {
-			res.status(400).json({ error: "All fields are required!" });
+		if (!result.success) {
+			res.status(400).json({
+				error: "Validation failed",
+				details: result.error.issues,
+			});
 			return;
 		}
+
+		const { name, email, password } = result.data;
 
 		const existingUser = await db
 			.select()
@@ -59,12 +65,17 @@ router.post("/register", async (req, res) => {
 // POST /api/auth/login
 router.post("/login", async (req, res) => {
 	try {
-		const { email, password } = req.body;
+		const result = loginSchema.safeParse(req.body);
 
-		if (!email || !password) {
-			res.status(400).json({ error: "Email and password are required !" });
+		if (!result.success) {
+			res.status(400).json({
+				error: "Validation failed",
+				details: result.error.issues,
+			});
 			return;
 		}
+
+		const { email, password } = result.data;
 
 		const [user] = await db
 			.select()

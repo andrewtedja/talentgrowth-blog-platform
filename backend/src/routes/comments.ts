@@ -4,6 +4,10 @@ import { comments, users, posts } from "../db/schema";
 import { eq, desc } from "drizzle-orm";
 import { requireAuth } from "../middleware/authMiddleware";
 import type { AuthRequest } from "../types/index";
+import {
+	createCommentSchema,
+	updateCommentSchema,
+} from "../validations/comments-validation";
 
 const router: ExpressRouter = Router();
 
@@ -40,12 +44,18 @@ router.get("/posts/:postId/comments", async (req, res) => {
 router.post("/posts/:postId/comments", requireAuth, async (req: AuthRequest, res) => {
 	try {
 		const postId = Number(req.params.postId);
-		const { content } = req.body;
 
-		if (!content) {
-			res.status(400).json({ error: "Content is required" });
+		const result = createCommentSchema.safeParse(req.body);
+
+		if (!result.success) {
+			res.status(400).json({
+				error: "Validation failed",
+				details: result.error.issues,
+			});
 			return;
 		}
+
+		const { content } = result.data;
 
 		const [post] = await db
 			.select()
@@ -78,12 +88,18 @@ router.post("/posts/:postId/comments", requireAuth, async (req: AuthRequest, res
 router.put("/comments/:id", requireAuth, async (req: AuthRequest, res) => {
 	try {
 		const commentId = Number(req.params.id);
-		const { content } = req.body;
 
-		if (!content) {
-			res.status(400).json({ error: "Content is required" });
+		const result = updateCommentSchema.safeParse(req.body);
+
+		if (!result.success) {
+			res.status(400).json({
+				error: "Validation failed",
+				details: result.error.issues,
+			});
 			return;
 		}
+
+		const { content } = result.data;
 
 		const [existingComment] = await db
 			.select()

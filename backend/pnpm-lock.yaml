@@ -29,6 +29,9 @@ importers:
       postgres:
         specifier: ^3.4.7
         version: 3.4.7
+      zod:
+        specifier: ^4.3.4
+        version: 4.3.4
     devDependencies:
       '@types/bcryptjs':
         specifier: ^3.0.0
@@ -1024,6 +1027,9 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  zod@4.3.4:
+    resolution: {integrity: sha512-Zw/uYiiyF6pUT1qmKbZziChgNPRu+ZRneAsMUDU6IwmXdWt5JwcUfy2bvLOCUtz5UniaN/Zx5aFttZYbYc7O/A==}
+
 snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
@@ -1800,3 +1806,5 @@ snapshots:
   vary@1.1.2: {}
 
   wrappy@1.0.2: {}
+
+  zod@4.3.4: {}

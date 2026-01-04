@@ -4,6 +4,10 @@ import { posts, users } from "../db/schema";
 import { eq, ilike, or, desc } from "drizzle-orm";
 import { requireAuth } from "../middleware/authMiddleware";
 import type { AuthRequest } from "../types/index";
+import {
+	createPostSchema,
+	updatePostSchema,
+} from "../validations/posts-validation";
 
 const router: ExpressRouter = Router();
 
@@ -102,12 +106,17 @@ router.get("/:id", async (req, res) => {
 // POST /api/posts (protected)
 router.post("/", requireAuth, async (req: AuthRequest, res) => {
 	try {
-		const { title, content } = req.body;
+		const result = createPostSchema.safeParse(req.body);
 
-		if (!title || !content) {
-			res.status(400).json({ error: "Title and content are required" });
+		if (!result.success) {
+			res.status(400).json({
+				error: "Validation failed",
+				details: result.error.issues,
+			});
 			return;
 		}
+
+		const { title, content } = result.data;
 
 		const [newPost] = await db
 			.insert(posts)
@@ -129,12 +138,18 @@ router.post("/", requireAuth, async (req: AuthRequest, res) => {
 router.put("/:id", requireAuth, async (req: AuthRequest, res) => {
 	try {
 		const postId = Number(req.params.id);
-		const { title, content } = req.body;
 
-		if (!title || !content) {
-			res.status(400).json({ error: "Title and content are required" });
+		const result = updatePostSchema.safeParse(req.body);
+
+		if (!result.success) {
+			res.status(400).json({
+				error: "Validation failed",
+				details: result.error.issues,
+			});
 			return;
 		}
+
+		const { title, content } = result.data;
 
 		const [existingPost] = await db
 			.select()
