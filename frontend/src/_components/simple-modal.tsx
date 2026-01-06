@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface SimpleModalProps {
 	isOpen: boolean;
@@ -49,14 +50,24 @@ export function SimpleModal({
 
 	if (!isOpen) return null;
 
-	return (
-		<div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
+	const modalContent = (
+		<div
+			className="absolute inset-0 z-[9999] flex items-center justify-center p-4"
+			style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+		>
+			{/* Backdrop - click to close */}
 			<div
-				className="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-auto"
+				className="absolute inset-0"
 				onClick={onClose}
+				style={{ cursor: "default" }}
 			/>
 
-			<div className="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6 space-y-4 pointer-events-auto">
+			{/* Modal Content */}
+			<div
+				className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6 space-y-4"
+				style={{ zIndex: 1 }}
+				onClick={(e) => e.stopPropagation()}
+			>
 				<div className="space-y-2">
 					<h2 className="text-xl font-semibold text-gray-900">{title}</h2>
 					<p className="text-sm text-gray-500">{description}</p>
@@ -66,7 +77,8 @@ export function SimpleModal({
 					<button
 						type="button"
 						onClick={onClose}
-						className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+						style={{ cursor: "pointer" }}
+						className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
 					>
 						{cancelText}
 					</button>
@@ -74,7 +86,8 @@ export function SimpleModal({
 						type="button"
 						onClick={onConfirm}
 						disabled={confirmDisabled}
-						className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+						style={{ cursor: confirmDisabled ? "not-allowed" : "pointer" }}
+						className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
 					>
 						{confirmText}
 					</button>
@@ -82,4 +95,6 @@ export function SimpleModal({
 			</div>
 		</div>
 	);
+
+	return createPortal(modalContent, document.body);
 }
